@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>My Site</title>
+</head>
+<body>
+    <h1>Hello World!</h1>
+    <form action="/api/readuser" method="get">
+        <h4>Search</h4>
+        <input type="text" name="name" placeholder="Name">
+        <button type="submit">Find</button>
+    </form>
+
+    <form action="/api/createuser" method="post">
+        <h4>Create</h4>
+        <input type="text" name="descricao" placeholder="descricao">
+        <input type="text" name="valor" placeholder="valor">
+        <input type="text" name="marca" placeholder="marca">
+        <button type="submit">Create</button>
+    </form>
+
+    <form action="/api/deleteuser" method="get">
+        <h4>Delete</h4>
+        <input type="text" name="name" placeholder="Name">
+        <button type="submit">Delete</button>
+    </form>
+
+</body>
+</html>

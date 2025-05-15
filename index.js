@@ -2,41 +2,69 @@ const express = require("express");
 
 const app = express();
 
-app.use((req, res, next) => {
-  console.log(new Date().toString(), req.hostname, req.method, req.url);
-  next();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static("public"));
+const knexConfig = require("./knexfile");
+const knex = require("knex")(knexConfig.development);
+
+const routerAPI = express.Router();
+
+app.use("/api", routerAPI);
+
+// CRUD
+
+routerAPI.get("/readuser", function (req, res) {
+  knex
+    .select("*")
+    .from("produtos")
+    .then((produtos) => {
+      res.json(produtos);
+      res.send(produtos);
+    });
 });
 
-app.use(express.urlencoded({extended: true}))
-app.use(express.json())
+routerAPI.post("/createuser", function (req, res) {
+  const novoProduto = {
+    descricao: req.body.descricao,
+    valor: req.body.valor,
+    marca: req.body.marca,
+  };
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+  knex("produtos")
+    .insert(novoProduto, ["id"])
+    .then((data) => {
+      let id = data[0].id;
+      novoProduto.id = id;
+      res.status(201).json(novoProduto);
+    });
+
+  // res.send(novoProduto);
 });
 
-app.get("/enzo", (req, res) => {
-  res.send("Enzo");
-});
+// routerAPI.get("/deleteuser", function (req, res) {
+//   const searchUser = req.query.name;
 
-app.get("/hello", (req, res) => {
-  const name = req.query.name;
-  res.send(`Hello ${name}`);
-});
+//   const index = 0;
 
-app.get("/reg", (req, res) => {
-    res.send(`
-        
-        <form>
-            <input name="name"></input>
-            <button type="send">Send</button>
-        </form>
-        
-    `);
-});
+//   users.map((user) => {
+//     if (user.name == searchUser) {
+//       users.splice(1, index);
+//     }
 
-app.post('/reg', (req, res) => {
-    res.send('Name: ' + req)
-})
+//     index++;
+//   });
+
+//   res.send(newUser);
+// });
+
+// routerAPI.use(function (req, res) {
+//   const url = req.host + req.url;
+
+//   res.status(418).send(":( <br>" + url + "<br> Not Found!");
+// });
+
+//
 
 const PORT = 3000;
 

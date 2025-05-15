@@ -1,0 +1,18 @@
+body {
+    animation: test 10s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    color: white;
+}
+
+@keyframes test {
+    0% {
+        background-color: red;
+    }
+    50% {
+        background-color: green;
+    }
+    100% {
+        background-color: blue;
+    }
+}
